@@ -1,4 +1,4 @@
-"""Modular ingestion utilities for reading source data and writing to Delta tables."""
+"""Modular ingestion utilities for reading source data and writing to Spark tables."""
 
 from __future__ import annotations
 
@@ -48,11 +48,11 @@ class Ingestion:
         return df
 
     def write(self, df: DataFrame, config: Dict[str, Any]) -> None:
-        """Write DataFrame to target Delta table in append mode."""
+        """Write DataFrame to target Spark table in append mode."""
 
         target_table = str(config.get("target_table", "")).strip()
         if not target_table:
             raise ValueError("config['target_table'] must be a non-empty string.")
 
-        df.write.format("delta").mode("append").saveAsTable(target_table)
-        LOGGER.info("Appended DataFrame to Delta table '%s'.", target_table)
+        df.write.mode("append").saveAsTable(target_table)
+        LOGGER.info("Appended DataFrame to table '%s' using default Spark format.", target_table)

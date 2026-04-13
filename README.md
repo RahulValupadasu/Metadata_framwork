@@ -47,7 +47,7 @@ config = loader.load_config("carrier_a")
   - Returns a PySpark DataFrame
 - `write(df, config)`
   - Writes DataFrame to `config["target_table"]`
-  - Uses Delta format with append mode
+  - Uses default Spark table format with append mode
 
 ### Example
 
@@ -67,4 +67,32 @@ config = {
 
 df = ingestion.read(config)
 ingestion.write(df, config)
+```
+
+## Standardizer (PySpark)
+
+`Standardizer` provides config-driven enterprise standardization for raw vendor data.
+
+### Highlights
+
+- Loads mapping JSON from `config["mapping_config_path"]`
+- Applies column mapping, missing column handling, defaults, type casting
+- Standardizes strings, date/timestamp values (UTC), phone/postal formats
+- Normalizes booleans and currency fields
+- Deduplicates records using configured primary keys
+- Applies a basic validation rule for `sales_amount`
+- Optionally adds `record_year` and `record_month`
+- Includes optional standard Spark `read(...)`/`write(...)` helpers with no Delta-only dependency
+
+### Example
+
+```python
+from pyspark.standardizer import Standardizer
+
+standardizer = Standardizer()
+clean_df = standardizer.transform(df, {
+    "mapping_config_path": "carrier_a_mapping.json",
+    "source_timezone": "UTC",
+    "add_derived_columns": True,
+})
 ```
