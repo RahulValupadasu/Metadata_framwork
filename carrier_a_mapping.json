@@ -1,0 +1,18 @@
+{
+  "column_mappings": {
+    "prod_id": "product_id",
+    "sub_category": "subcategory",
+    "sales_amt": "sales_amount",
+    "transaction_date": "date"
+  },
+  "data_types": {
+    "product_id": "string",
+    "subcategory": "string",
+    "sales_amount": "double",
+    "date": "date"
+  },
+  "default_values": {
+    "sales_amount": 0
+  },
+  "primary_keys": ["product_id", "date"]
+}
