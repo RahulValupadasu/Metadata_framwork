@@ -33,3 +33,38 @@ spark = SparkSession.builder.getOrCreate()
 loader = ConfigLoader(spark)
 config = loader.load_config("carrier_a")
 ```
+
+## Ingestion (PySpark)
+
+`Ingestion` provides a simple modular ingestion layer for Databricks pipelines.
+
+### Methods
+
+- `read(config)`
+  - Reads data from `config["source_path"]` based on `config["source_type"]`
+  - Supported source types: `csv` (with header = true), `parquet`
+  - Logs the number of records read
+  - Returns a PySpark DataFrame
+- `write(df, config)`
+  - Writes DataFrame to `config["target_table"]`
+  - Uses Delta format with append mode
+
+### Example
+
+```python
+from pyspark.sql import SparkSession
+
+from pyspark.ingestion import Ingestion
+
+spark = SparkSession.builder.getOrCreate()
+ingestion = Ingestion(spark)
+
+config = {
+    "source_type": "csv",
+    "source_path": "/mnt/raw/carrier_a",
+    "target_table": "bronze.carrier_a",
+}
+
+df = ingestion.read(config)
+ingestion.write(df, config)
+```
