@@ -1,0 +1,24 @@
+{
+  "entity_name": "policies",
+
+  "column_mappings": {
+    "policy_id": "policy_id",
+    "cust_id": "customer_id",
+    "product_id": "product_id",
+    "start_date": "policy_start_date"
+  },
+
+  "data_types": {
+    "policy_id": "string",
+    "customer_id": "string",
+    "product_id": "string",
+    "policy_start_date": "date",
+    "source_name": "string",
+    "ingestion_timestamp": "timestamp",
+    "run_id": "string"
+  },
+
+  "default_values": {},
+
+  "primary_keys": ["policy_id"]
+}
